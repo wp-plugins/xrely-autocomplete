@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Xrely Autocomplete ===
 Contributors: Jugal43
 Donate link: http://autocomplete.xrely.com/donate
 Tags: autocomplete, search autocomplete, auto correction, search assistance
