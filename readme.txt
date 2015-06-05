@@ -38,7 +38,7 @@ e.g.
 
 == Screenshots ==
 
-1. Create account and Get API key <a href="autocomplete.xrely.com/Account/register" >Click to register first</a>
+1. Create account and Get API key <a href="http://autocomplete.xrely.com/Account/register" >Click to register first</a>
 1. Configure your autocomplete data.
 1. Design your autocomplete as per theme of your website
 
