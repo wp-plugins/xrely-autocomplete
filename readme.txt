@@ -1,6 +1,6 @@
 === Xrely Autocomplete ===
 Contributors: Jugal43
-Donate link: http://autocomplete.xrely.com/donate
+Donate link: 
 Tags: autocomplete, search autocomplete, auto correction, search assistance
 Requires at least: 4.2
 Tested up to: 4.2
