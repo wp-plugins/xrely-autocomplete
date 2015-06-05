@@ -38,8 +38,7 @@ e.g.
 
 == Screenshots ==
 
-1. screenshot-1.jpg
-1. screenshot-1.jpg
+1. screenshot-1.png
 
 == Changelog ==
 
