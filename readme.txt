@@ -32,8 +32,8 @@ Xrely's Autocomplete plugin empowers your site search by provideing aut correcti
 Include the css for the drop down list.
 e.g.
 <code>
-    .autocomplete-suggestions{background-color : white;}
-    .autocomplete-suggestion:hover{color : red;}
+	.autocomplete-suggestions{background-color : white;}
+	.autocomplete-suggestion:hover{color : red;}
 </code>
 
 == Screenshots ==
