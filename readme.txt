@@ -2,7 +2,7 @@
 Contributors: Jugal43
 Donate link: 
 Tags: autocomplete, search autocomplete, auto correction, search assistance
-Requires at least: 4.2
+Requires at least: 3.5.1
 Tested up to: 4.2
 Stable tag: 4.3
 License: GPLv2 or later
