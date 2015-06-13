@@ -1,4 +1,4 @@
-=== Xrely Autocomplete ===
+=== XrelY Autocomplete ===
 Contributors: Jugal43
 Donate link: 
 Tags: autocomplete, search autocomplete, auto correction, search assistance
@@ -8,7 +8,7 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Xrely's Autocomplete plugin empowers your site search by provideing aut correction and reach autocomplete feature.
+XrelY's Autocomplete plugin empowers your site search by provideing aut correction and reach autocomplete feature.
 
 == Description ==
 
@@ -31,10 +31,14 @@ Xrely's Autocomplete plugin empowers your site search by provideing aut correcti
 
 Include the css for the drop down list.
 e.g.
-<code>
-	.autocomplete-suggestions{background-color : white;}
-	.autocomplete-suggestion:hover{color : red;}
-</code>
+```css
+.autocomplete-suggestions{
+	background-color : white;
+}
+.autocomplete-suggestion:hover{
+color : red;
+}
+```
 
 == Screenshots ==
 
