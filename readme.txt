@@ -18,7 +18,8 @@ XrelY's Autocomplete plugin empowers your site search by provideing aut correcti
 * Instant & On the fly serach input correction.
 * Empower your site search by xrely autocomplete.
 * Customize search drop down design as per your choice.
-* Reach autocomplete.
+* Rich autocomplete.
+* Supports Woocommerce product attributes.
 
 == Installation ==
 
