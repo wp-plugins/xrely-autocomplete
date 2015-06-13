@@ -31,14 +31,15 @@ XrelY's Autocomplete plugin empowers your site search by provideing aut correcti
 
 Include the css for the drop down list.
 e.g.
-```css
+
+`
 .autocomplete-suggestions{
 	background-color : white;
 }
 .autocomplete-suggestion:hover{
 color : red;
 }
-```
+`
 
 == Screenshots ==
 
