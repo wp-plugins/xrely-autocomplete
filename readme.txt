@@ -8,7 +8,7 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-XrelY's Autocomplete plugin empowers your site search by provideing aut correction and reach autocomplete feature.
+XrelY's Autocomplete plugin empowers your site search by provideing autocorrection and reach autocomplete feature.
 
 == Description ==
 
