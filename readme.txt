@@ -37,7 +37,7 @@ e.g.
 	background-color : white;
 }
 .autocomplete-suggestion:hover{
-color : red;
+	color : red;
 }
 `
 
