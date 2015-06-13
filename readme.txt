@@ -15,9 +15,9 @@ XrelY's Autocomplete plugin empowers your site search by provideing aut correcti
 <a href="http://autocomplete.xrely.com">XrelY's Autocomplete</a> is the search solution for web sites.  
 
 <p><strong>Features:-</strong></p>
-* Instance on the fly your input correction with respect to your website.
-* Empower your site search by search box auto complete.
-* Customize search drop down as per your choice.
+* Instant & On the fly serach input correction.
+* Empower your site search by xrely autocomplete.
+* Customize search drop down design as per your choice.
 * Reach autocomplete.
 
 == Installation ==
