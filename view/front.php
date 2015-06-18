@@ -31,13 +31,19 @@ function getHEXRGB($string)
 </style>
 <?php
     $new_user = !isset($data["xrely_config"]["account_type"]) || $data["xrely_config"]["account_type"] == false;
-    $tab_attr = $new_user?"onmousedown='return false;'":"";
+$tab_attr = $new_user ? "onmousedown='return false;'" : "";
 ?>
 <div style="padding-top: 20px"> 
     <h1 style="position: relative">
         <img src="<?php echo $url = XRELY__PLUGIN_URL; ?>_inc/xrely.png" width="100" style="width: 64px;" />
-        <div style="position: absolute;left: 64px;bottom: 12px;"><a href="<?php echo XRELY_SITE_URL; ?>" style="text-decoration: none;" target="_blank">Xrely Autocomplete</a></div>
+        <div style="position: absolute;left: 64px;bottom: 12px;">
+            <a href="<?php echo XRELY_SITE_URL; ?>" style="text-decoration: none;" target="_blank">Xrely Autocomplete</a>
+        </div>
     </h1>
+    <form method="POST" action="">
+        <input type="hidden" name="subpage" value="activate"/>
+        <input id="xrely_activate" value="<?php echo $data["xrely_config"]["active"] == "enable"?"Disable":"Enable"; ?>" name="xrely_activate" type="submit" class="button button-primary" />
+    </form>
     <div style="width: 100%;padding: 20px 0 40px;">
         <ul class="tabs" data-persist="true"> 
             <li><a href="#view1">API Key</a></li>
@@ -72,13 +78,12 @@ function getHEXRGB($string)
                 <b>Select the post attributes that you want to have it in drop down</b>
                 <div style="margin-top:10px;">
                 <?php 
-                    if(isset($data["xrely_config"]['response']) && isset($data["xrely_config"]['response']['data_config_response']))
+                    if (isset($data["xrely_config"]['response']) && isset($data["xrely_config"]['response']['data_config_response']))
                     {
-                        if(isset($data["xrely_config"]['response']['data_config_response']['error']))
+                        if (isset($data["xrely_config"]['response']['data_config_response']['error']))
                         {
-                            echo '<span style="color:red;">'.$data["xrely_config"]['response']['data_config_response']['error'].' :(</span>';
-                        }
-                        elseif ($data["xrely_config"]['response']['data_config_response']['sucess'])
+                            echo '<span style="color:red;">' . $data["xrely_config"]['response']['data_config_response']['error'] . ' :(</span>';
+                        } elseif ($data["xrely_config"]['response']['data_config_response']['sucess'])
                         {
                             echo '<span style="color:green;">Your Data will shortly get indexed, You will get an email for same on completion </span>';
                         }
@@ -137,7 +142,8 @@ function getHEXRGB($string)
                         $xpath = new DOMXPath($dom);
                         $nodes = $xpath->query("//input[@name='s']");
                         $submit_button = $xpath->query("//input[@type='submit']");
-                        foreach ($submit_button as  $submit_node) {
+                        foreach ($submit_button as $submit_node)
+                        {
                             $submit_node->parentNode->removeChild($submit_node);
                         }
 

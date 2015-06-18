@@ -19,6 +19,9 @@ class Xrely_Admin
         $subpage = isset($_POST["subpage"]) ? $_POST["subpage"] : "";
         switch ($subpage)
         {
+            case "activate":
+                add_action('admin_menu', array('Xrely_Admin', 'admin_activate'), 5);
+                break;
             case "apikey":
                 add_action('admin_menu', array('Xrely_Admin', 'admin_key_verify'), 5);
                 break;
@@ -77,6 +80,11 @@ class Xrely_Admin
         $hook = add_options_page('Xrely', 'Xrely', 'manage_options', 'xrely-key-config', array('Xrely_Admin', 'display_page'));
     }
 
+    public static function admin_activate()
+    {
+        $hook = add_options_page('Xrely', 'Xrely', 'manage_options', 'xrely-key-config', array('Xrely_Admin', 'post_activate'));
+    }
+
     public static function admin_key_verify()
     {
         $hook = add_options_page('Xrely', 'Xrely', 'manage_options', 'xrely-key-config', array('Xrely_Admin', 'post_key_veryfy'));
@@ -90,6 +98,19 @@ class Xrely_Admin
     public static function admin_config_css()
     {
         $hook = add_options_page('Xrely', 'Xrely', 'manage_options', 'xrely-key-config', array('Xrely_Admin', 'post_config_css'));
+    }
+
+    public static function post_activate()
+    {
+        $enable = strtolower($_POST['xrely_activate']);
+        if (!get_site_option("xrely_active"))
+        {
+            add_site_option("xrely_active", $enable);
+        } else
+        {
+            update_site_option("xrely_active", $enable);
+        }
+        static::display_start_page();
     }
 
     public static function post_config_css()
@@ -176,15 +197,13 @@ class Xrely_Admin
                 endwhile;
             endif;
 
-            $response =  static::send_data($post_data);
-            static::display_start_page(array("data_config_response"=>json_decode($response,true)));
+            $response = static::send_data($post_data);
+            static::display_start_page(array("data_config_response" => json_decode($response, true)));
             return;
-        }
-        else
+        } else
         {
-            static::display_start_page(array("data_config_response"=>["error"=>"Please Create API Key <a href='javascritp:void(0);' onclick=\"jQuery('[href=#view1]')[0].click()\">click</a>"]));
+            static::display_start_page(array("data_config_response" => ["error" => "Please Create API Key <a href='javascritp:void(0);' onclick=\"jQuery('[href=#view1]')[0].click()\">click</a>"]));
         }
-
     }
 
     public static function post_key_veryfy()

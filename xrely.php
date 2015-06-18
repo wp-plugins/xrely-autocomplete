@@ -18,7 +18,7 @@ define('XRELY__PLUGIN_URL', plugin_dir_url(__FILE__));
 define('XRELY__PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('XRELY_DELETE_LIMIT', 100000);
 define('XRELY_SITE_URL', "http://autocomplete.xrely.com/");
-define('XRELY_WEB_SERVICE_DISCOVERY_URL', XRELY_SITE_URL."Discovery/");
+define('XRELY_WEB_SERVICE_DISCOVERY_URL', XRELY_SITE_URL . "Discovery/");
 define('XRELY_SERVICE_DOMAIN', XRELY_SITE_URL);
 
 require_once( XRELY__PLUGIN_DIR . 'class.xrely.php' );
@@ -29,5 +29,8 @@ if (is_admin())
     add_action('init', array('Xrely_Admin', 'init'));
 } else
 {
-    add_action('wp_footer', array('Xrely', 'add_xrely_script_tag'));
+    if (get_site_option("xrely_active") == 'enable')
+    {
+       add_action('wp_footer', array('Xrely', 'add_xrely_script_tag'));
+    }
 }

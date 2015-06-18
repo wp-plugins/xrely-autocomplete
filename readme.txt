@@ -50,6 +50,10 @@ e.g.
 
 == Changelog ==
 
+= 1.1 =
+* Enable/Disable functionality.
+
+
 = 1.0 =
 * Initial release for basic features.
 
