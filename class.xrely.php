@@ -28,7 +28,7 @@ class Xrely
             (function () {
                 var s = document.createElement("script");
                 s.type = "text/javascript";
-                s.src = "<?php echo XRELY_SERVICE_DOMAIN; ?>js/jp/autocomplete/autoScript.js?_=<?php echo $_SERVER['HTTP_HOST'] ?>&no=1";
+                s.src = "<?php echo XRELY_SERVICE_DOMAIN; ?>js/autocomplete/autoScript.js?_=<?php echo $_SERVER['HTTP_HOST'] ?>&no=1";
                 var x = document.getElementsByTagName("head")[0];
                 x.appendChild(s);
             })();
