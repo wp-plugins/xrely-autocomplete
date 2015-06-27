@@ -104,7 +104,7 @@ function evaluateFinalStyle(_input)
         }
     }
     if (_input && jQuery(_input))
-        jQuery(_input).val(JSON.stringify({".autocomplete-suggestion": JSON.stringify(z), ".autocomplete-suggestion:hover": JSON.stringify(y)}));
+        jQuery(_input).val(JSON.stringify({".autocomplete-suggestion": JSON.stringify(z), ".autocomplete-selected": JSON.stringify(y),".autocomplete-suggestion:hover": JSON.stringify(y),".autocomplete-suggestions":"{\"background-color\":\"rgb(255, 255, 255)\"}"}));
     else
-        return JSON.stringify({".autocomplete-suggestion": JSON.stringify(z), ".autocomplete-suggestion:hover": JSON.stringify(y)});
+        return JSON.stringify({".autocomplete-suggestion": JSON.stringify(z), ".autocomplete-selected": JSON.stringify(y), ".autocomplete-suggestion:hover": JSON.stringify(y),".autocomplete-suggestions":"{\"background-color\":\"rgb(255, 255, 255)\"}"});
 }
