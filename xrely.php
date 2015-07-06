@@ -4,7 +4,7 @@
  * Plugin Name: Xrely Autocomplete.
  * Plugin URI: http://autocomplete.xrely.com
  * Description: Xrely Autocomplete provieds rich and fastest autocomplete and correction feature to your website search.
- * Version: 1.0.0
+ * Version: 1.0.2
  * Author: Jugal
  * Author URI: http://autocomplete.xrely.com
  * Text Domain: Optional. Plugin's text domain for localization. Example: mytextdomain

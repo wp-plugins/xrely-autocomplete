@@ -50,11 +50,17 @@ e.g.
 
 == Changelog ==
 
-= 1.1 =
+
+= 1.0.2 =
+* Overriding data on resubmmit.
+* Showing current configuration.
+* Bug fix
+
+= 1.0.1 =
 * Enable/Disable functionality.
 
 
-= 1.0 =
+= 1.0.0 =
 * Initial release for basic features.
 
 == Upgrade Notice ==

@@ -45,20 +45,6 @@ jQuery(document).ready(function () {
             jQuery(this).colpickSetColor(this.value);
         }).css('border-color', '#' + jQuery(this).val());
     });
-    jQuery("[data-slider]")
-            .each(function () {
-                var input = jQuery(this);
-                jQuery("<span>")
-                        .addClass("output")
-                        .insertAfter(jQuery(this));
-            })
-            .bind("slider:ready slider:changed", function (event, data) {
-                jQuery(this)
-                        .nextAll(".output:first")
-                        .html(data.value.toFixed(3));
-
-                cssAdaptor(jQuery(this));
-            });
     jQuery(".autocomplete-suggestion").hover(function () {
         for (var prop in inputToStyleMapper) {
             if (inputToStyleMapper.hasOwnProperty(prop) && inputToStyleMapper[prop].hasOwnProperty("hoverInput")) {
@@ -75,6 +61,12 @@ jQuery(document).ready(function () {
         return false;
     });
 });
+jQuery("[data-slider]").bind("slider:ready slider:changed", function (event, data) {
+                jQuery(this)
+                        .siblings(".output")
+                        .html(data.value+" px");
+                cssAdaptor(jQuery(this));
+            });
 function cssAdaptor()
 {
     for (var prop in inputToStyleMapper) {

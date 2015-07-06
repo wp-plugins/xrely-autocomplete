@@ -1,12 +1,15 @@
 <?php
-
+function zeropad($num, $lim = 2)
+{
+   return (strlen($num) >= $lim) ? $num : zeropad("0" . $num);
+}
 function getHEXRGB($string)
 {
     $matches = null;
     $returnValue = preg_match('/rgba?\\(\\s*(?<red>[0-9A-F]{1,3})\\s*,\\s*(?<green>[0-9A-F]{1,3})\\s*,\\s*(?<blue>[0-9A-F]{1,3})/is', $string, $matches);
     if ($returnValue)
     {
-        return dechex(intval($matches["red"])) . dechex(intval($matches["green"])) . dechex(intval($matches["blue"]));
+        return zeropad(dechex(intval($matches["red"])),2) . zeropad(dechex(intval($matches["green"])),2) . zeropad(dechex(intval($matches["blue"])),2);
     }
     return trim($string, "#");
 }
@@ -99,11 +102,11 @@ $tab_attr = $new_user ? "onmousedown='return false;'" : "";
 
                     <div id="configuration">
                         <fieldset>
-                            <label><input type="checkbox" name="title" />Title</label>
-                            <label><input type="checkbox" name="url" />URL</label>
-                            <label title="Upgrade Your Account"><input type="checkbox" name="thumb" <?php echo $disable ?> />Thumbnail</label>
-                            <label title="Upgrade Your Account"><input type="checkbox" name="category" <?php echo $disable ?> />Category</label>
-                            <label title="Upgrade Your Account"><input type="checkbox" name="author" <?php echo $disable ?> />Author</label>
+                            <label><input type="checkbox" name="title" <?php echo isset($data["xrely_config"]["config"]["title"])?"checked":""; ?>  />Title</label>
+                            <label><input type="checkbox" name="url" <?php echo isset($data["xrely_config"]["config"]["url"])?"checked":""; ?> />URL</label>
+                            <label title="Upgrade Your Account"><input type="checkbox" name="thumb" <?php echo $disable; echo isset($data["xrely_config"]["config"]["thumb"])?"checked":""; ?>  />Thumbnail</label>
+                            <label title="Upgrade Your Account"><input type="checkbox" name="category" <?php echo $disable; echo isset($data["xrely_config"]["config"]["category"])?"checked":""; ?> />Category</label>
+                            <label title="Upgrade Your Account"><input type="checkbox" name="author" <?php echo $disable; echo isset($data["xrely_config"]["config"]["author"])?"checked":""; ?> />Author</label>
                             <div style="margin-top: 10px;">
                                 <?php
                                 if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins'))))
@@ -112,7 +115,7 @@ $tab_attr = $new_user ? "onmousedown='return false;'" : "";
                                     foreach (wc_get_attribute_taxonomies() as $one_attribute)
                                     {
                                         ?>
-                                        <label title="Upgrade Your Account"><input type="checkbox" name="<?php echo $one_attribute->attribute_name ?>" <?php echo $isPrimium ? "" : " disabled " ?> /><?php echo $one_attribute->attribute_label ?></label>
+                                        <label title="Upgrade Your Account"><input type="checkbox" name="<?php echo $one_attribute->attribute_name ?>" <?php echo isset($data["xrely_config"]["config"][$one_attribute->attribute_name])?"checked":""; ?> <?php echo $isPrimium ? "" : " disabled " ?>  /><?php echo $one_attribute->attribute_label ?></label>
 
                                     <?php } ?>
                                     <label title="Upgrade Your Account"><input type="checkbox" name="_regular_price" <?php echo $disable ?> />Price</label>
@@ -156,9 +159,9 @@ $tab_attr = $new_user ? "onmousedown='return false;'" : "";
                             $html_str = "";
                             foreach ($data["xrely_config"]["posts"] as $__post)
                             {
-                                $html_str .= '<div class="autocomplete-suggestion autocomplete-selected" data-index="0">' . ($__post->post_title) . '</div>';
+                                $html_str .= '<div class="autocomplete-suggestion" data-index="0">' . ($__post->post_title) . '</div>';
                             }
-                            $drop_down_dom->loadHTML('<div id="previewContainer"><div><div class="autocomplete-suggestions">' . $html_str . '</div></div></div>');
+                            @$drop_down_dom->loadHTML('<div id="previewContainer"><div><div class="autocomplete-suggestions">' . $html_str . '</div></div></div>');
                             $drop_down_node = $dom->importNode($drop_down_dom->documentElement, true);
                             $dom->appendChild($drop_down_node);
                             break;
@@ -177,10 +180,10 @@ $tab_attr = $new_user ? "onmousedown='return false;'" : "";
                                             <b>Auto suggest block design</b>
                                         </li>
                                         <li id="textColor">
-                                            <div class="col-sm-6"><label for="color">Text Color: </label></div><div class="col-sm-6"><input id="color" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["cssArray"]['.autocomplete-suggestion']["color"]) ?>" /></div><div class="clear"></div>
+                                            <div class="col-sm-6"><label for="color">Text Color: </label></div><div class="col-sm-6"><input id="color" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["xrely_config"]["css"]['.autocomplete-suggestion']["color"]) ?>" /></div><div class="clear"></div>
                                         </li>
                                         <li id="backBroundColor">
-                                            <div class="col-sm-6"><label  for="backColor">Background color: </label></div><div class="col-sm-6"><input id="backColor" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["cssArray"]['.autocomplete-suggestion']["background-color"]) ?>"></input></div><div class="clear"></div>
+                                            <div class="col-sm-6"><label  for="backColor">Background color: </label></div><div class="col-sm-6"><input id="backColor" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["xrely_config"]["css"]['.autocomplete-suggestion']["background-color"]) ?>"></input></div><div class="clear"></div>
                                         </li>
                                         <li class="clear"></li>
                                     </ul>
@@ -197,10 +200,10 @@ $tab_attr = $new_user ? "onmousedown='return false;'" : "";
                                             <b>Auto suggest block design</b>
                                         </li>
                                         <li id="textColor">
-                                            <div class="col-sm-6"><label  for="colorHover">On Hover Color: </label></div><div class="col-sm-6"><input id="colorHover" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["cssArray"]['.autocomplete-suggestion:hover']["color"]) ?>" /></div><div class="clear"></div>
+                                            <div class="col-sm-6"><label  for="colorHover">On Hover Color: </label></div><div class="col-sm-6"><input id="colorHover" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["xrely_config"]["css"]['.autocomplete-suggestion:hover']["color"]) ?>" /></div><div class="clear"></div>
                                         </li>
                                         <li id="backBroundColor">
-                                            <div class="col-sm-6"><label for="backColorHover">On Hover Background color: </label></div><div class="col-sm-6"><input id="backColorHover" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["cssArray"]['.autocomplete-suggestion:hover']["background-color"]) ?>"></input></div><div class="clear"></div>
+                                            <div class="col-sm-6"><label for="backColorHover">On Hover Background color: </label></div><div class="col-sm-6"><input id="backColorHover" type="text" class="picker" placeholder="Select you color" value="<?php echo getHEXRGB($data["xrely_config"]["css"]['.autocomplete-suggestion:hover']["background-color"]) ?>"></input></div><div class="clear"></div>
                                         </li>
                                         <li class="clear"></li>
                                     </ul>
@@ -222,19 +225,23 @@ $tab_attr = $new_user ? "onmousedown='return false;'" : "";
                                         </li>
                                         <li id="textColor">
                                             <div class="sliderContainer">
-                                                <label for="paddTop">Padding Top: </label><input id="paddTop" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['padding-top']) ? $data["cssArray"][".autocomplete-suggestion"]['padding-top'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="paddTop">Padding Top: </label><input id="paddTop" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-top']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-top'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-top']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-top'] : "0")); ?></span>
                                             </div>
                                             <div class="sliderContainer">
-                                                <label for="paddRight">Padding Right: </label><input id="paddRight" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['padding-right']) ? $data["cssArray"][".autocomplete-suggestion"]['padding-right'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="paddRight">Padding Right: </label><input id="paddRight" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-right']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-right'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-right']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-right'] : "0")); ?></span>
                                             </div>
                                             <div class="clear"></div>
                                         </li>
                                         <li id="backBroundColor">
                                             <div class="sliderContainer">
-                                                <label for="paddBottom">Padding Bottom: </label><input id="paddBottom" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['padding-bottom']) ? $data["cssArray"][".autocomplete-suggestion"]['padding-bottom'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="paddBottom">Padding Bottom: </label><input id="paddBottom" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-bottom']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-bottom'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-bottom']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-bottom'] : "0")); ?></span>
                                             </div>
                                             <div class="sliderContainer">
-                                                <label for="paddLeft">Padding Left: </label><input id="paddLeft" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['padding-left']) ? $data["cssArray"][".autocomplete-suggestion"]['padding-left'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="paddLeft">Padding Left: </label><input id="paddLeft" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-left']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-left'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-left']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['padding-left'] : "0")); ?></span>
                                             </div>
                                             <div class="clear"></div>
                                         </li>
@@ -254,19 +261,23 @@ $tab_attr = $new_user ? "onmousedown='return false;'" : "";
                                         </li>
                                         <li id="textColor">
                                             <div class="sliderContainer">
-                                                <label for="marTop">Margin Top: </label><input id="marTop" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['margin-top']) ? $data["cssArray"][".autocomplete-suggestion"]['margin-top'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="marTop">Margin Top: </label><input id="marTop" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-top']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-top'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-top']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-top'] : "0")); ?></span>
                                             </div>
                                             <div class="sliderContainer">
-                                                <label for="marRight">Margin Right: </label><input id="marRight" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['margin-right']) ? $data["cssArray"][".autocomplete-suggestion"]['margin-right'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="marRight">Margin Right: </label><input id="marRight" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-right']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-right'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-right']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-right'] : "0")); ?></span>
                                             </div>
                                             <div class="clear"></div>
                                         </li>
                                         <li id="backBroundColor">
                                             <div class="sliderContainer">
-                                                <label for="marLeft">Margin Left: </label><input id="marLeft" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['margin-left']) ? $data["cssArray"][".autocomplete-suggestion"]['margin-left'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="marLeft">Margin Left: </label><input id="marLeft" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-left']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-left'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-left']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-left'] : "0")); ?></span>
                                             </div>
                                             <div class="sliderContainer">
-                                                <label for="marBottom">Margin: Bottom</label><input id="marBottom" type="text" data-slider="true" value="<?php echo intval((isset($data["cssArray"][".autocomplete-suggestion"]['margin-bottom']) ? $data["cssArray"][".autocomplete-suggestion"]['margin-bottom'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <label for="marBottom">Margin: Bottom</label><input id="marBottom" type="text" data-slider="true" value="<?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-bottom']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-bottom'] : "0")); ?>" data-slider-highlight="true" data-slider-range="0,50" data-slider-step="1">
+                                                <span class="output"><?php echo intval((isset($data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-bottom']) ? $data["xrely_config"]["css"][".autocomplete-suggestion"]['margin-bottom'] : "0")); ?></span>
                                             </div>  
                                             <div class="clear"></div>
                                         </li>

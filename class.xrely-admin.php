@@ -123,6 +123,10 @@ class Xrely_Admin
             {
                 $data["API_KEY"] = get_site_option("xrely_key");
                 $data["css"] = $_POST["css"];
+                if(!get_site_option("xrely_css"))
+                    add_site_option("xrely_css",$_POST["css"]);
+                else
+                    update_site_option("xrely_css",$_POST["css"]);
                 static::css_post(array("data" => $data));
                 static::display_start_page();
             }
@@ -132,7 +136,9 @@ class Xrely_Admin
     public static function post_config_data()
     {
         $apikey = get_site_option("xrely_key");
-
+        $config_option  = $_POST;
+        unset($config_option['subpage']);
+        
         if ($apikey)
         {
             $args = array(
@@ -165,7 +171,7 @@ class Xrely_Admin
                         }
                     }
                     if ($_POST["title"])
-                        $one_post_data["title"] = get_the_title();
+                        $one_post_data["title"] = html_entity_decode(get_the_title(),ENT_QUOTES,'UTF-8');
                     if ($_POST["url"])
                         $one_post_data["url"] = get_the_permalink();
                     $one_post_data["type"] = get_post_type();
@@ -193,12 +199,23 @@ class Xrely_Admin
                             }
                         }
 
-                    $meta_data[] = ["keyword" => get_the_title(), "metaData" => $one_post_data];
+                    $meta_data[] = ["keyword" => $one_post_data["title"], "metaData" => $one_post_data];
                 endwhile;
             endif;
-
-            $response = static::send_data($post_data);
-            static::display_start_page(array("data_config_response" => json_decode($response, true)));
+            $response = json_decode(static::send_data($post_data), true);
+            
+            if(isset($response["success"]))
+            {
+                if(get_option('xrely_data_config'))
+                {
+                    update_option('xrely_data_config', json_encode($config_option)); 
+                }
+                else
+                {
+                    add_option('xrely_data_config', json_encode($config_option));                     
+                }
+            }
+            static::display_start_page(array("data_config_response" => $response));
             return;
         } else
         {
@@ -243,7 +260,31 @@ class Xrely_Admin
     public static function display_start_page($response = array())
     {
         $xrely_config["key"] = get_site_option("xrely_key");
+        $xrely_config["active"] = get_site_option("xrely_active");
         $xrely_config["account_type"] = get_site_option("xrely_key_type");
+        $xrely_config["css"] = get_site_option("xrely_css");
+        if($xrely_config["css"] === FALSE)
+        {
+            $css_json = json_decode(self::css_get(),true);
+            if(is_array($css_json) && isset($css_json['css']))
+            {
+                $css =  $css_json['css'];
+            }
+            else
+            {
+                $css = 'na';
+            }
+            add_site_option('xrely_css',$css);
+            $xrely_config["css"] = $css;
+        }
+        $xrely_config["css"] = ($xrely_config["css"] === FALSE || $xrely_config["css"] == "na")?FALSE:json_decode($xrely_config["css"],TRUE);
+        
+        $xrely_config["config"] = json_decode(get_option("xrely_data_config"),TRUE);
+        if(is_array($xrely_config["css"]))
+            foreach ($xrely_config["css"] as $key => $css)
+            {
+                $xrely_config["css"][$key] = json_decode($css,true);
+            }
         $xrely_config['response'] = $response;
         $args = array(
             'posts_per_page' => 7, 'orderby' => 'post_date',
@@ -280,7 +321,15 @@ class Xrely_Admin
             return false;
         }
     }
-
+    
+    private static function css_get()
+    {
+        $wsd = static::discover_services();
+        $services = json_decode($wsd, true);
+         $post_url = $services["design"]["get"]["url"];
+        $response =  static::curl_xrely($post_url, array(),false);
+        return $response;
+    }
     private static function activation_post($apikey)
     {
         try
@@ -288,7 +337,7 @@ class Xrely_Admin
             $wsd = static::discover_services();
             $services = json_decode($wsd, true);
             $post_url = $services["validator"]["post"]["url"];
-            return static::curl_xrely($post_url, ["key" => $apikey,'host' => $_SERVER['HTTP_HOST']]);
+            return static::curl_xrely($post_url, ["key" => $apikey, 'host' => $_SERVER['HTTP_HOST']]);
         } catch (Exception $exc)
         {
             return false;
@@ -298,11 +347,14 @@ class Xrely_Admin
     private static function curl_xrely($url, $data, $post = true)
     {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
         if ($post)
         {
+            curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        }else
+        {
+            curl_setopt($ch, CURLOPT_URL, preg_replace("/($|\?)(.*)/is","?domain=".$_SERVER['HTTP_HOST']."&$2",$url));
         }
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
