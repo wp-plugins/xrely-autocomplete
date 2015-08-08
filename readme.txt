@@ -1,7 +1,7 @@
 === XrelY Autocomplete ===
 Contributors: Jugal43
 Donate link: 
-Tags: autocomplete, search autocomplete, auto correction, search assistance
+Tags: autocomplete, search autocomplete, auto correction, search assistance, woocommerce, typeahead, woocommerce autocomplete
 Requires at least: 3.5.1
 Tested up to: 4.2
 Stable tag: 4.3
